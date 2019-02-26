@@ -20,5 +20,27 @@ router.get('/', (req, res) => {
         });
 });
 
+router.post('/', (req, res) => {
+    const zooInfo = req.body;
+
+    if (!zooInfo.name)
+        return res.status(400).json({ errorMessage: 'Please provide the name of the zoo.' });
+
+    db('zoos')
+        .insert(req.body)
+        .then(ids => {
+            const [id] = ids;
+
+            db('zoos')
+                .where({ id })
+                .then(zoo => {
+                    res.status(201).json(zoo);
+                });
+        })
+        .catch(() => {
+            res.status(500).json({ error: 'There was an error while saving the zoo.' });
+        });
+});
+
 module.exports = router;
 

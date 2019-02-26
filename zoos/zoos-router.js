@@ -15,10 +15,25 @@ router.get('/', (req, res) => {
         .then(zoos => {
             res.status(200).json(zoos);
         })
-        .catch(err => {
-            res.status(500).json(err)
+        .catch(() => {
+            res.status(500).json({ error: 'The zoos could not be retrieved.' });
         });
 });
+
+router.get('/:id', (req, res) => {
+    db('zoos')
+        .where({ id: req.params.id })
+        .then(zoo => {
+            if (zoo) {
+                res.status(200).json(zoo);
+            } else {
+                res.status(404).json({ errorMessage: 'A zoo with that ID does not exist.' });
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ error: 'The zoo could not be retrieved.' });
+        })
+})
 
 router.post('/', (req, res) => {
     const zooInfo = req.body;

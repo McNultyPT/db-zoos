@@ -57,5 +57,21 @@ router.post('/', (req, res) => {
         });
 });
 
+router.delete('/:id', (req, res) => {
+    db('zoos')
+        .where({ id: req.params.id })
+        .del()
+        .then(count => {
+            if (count > 0) {
+                res.status(204).json({ message: 'Zoo has been deleted.' });
+            } else {
+                res.status(404).json({ errorMessage: 'A zoo with that ID does not exist.' });
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ error: 'There was an error while deleting the zoo.' });
+        });
+});
+
 module.exports = router;
 

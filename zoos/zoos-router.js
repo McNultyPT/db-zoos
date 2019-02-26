@@ -33,8 +33,8 @@ router.get('/:id', (req, res) => {
         })
         .catch(() => {
             res.status(500).json({ error: 'The zoo could not be retrieved.' });
-        })
-})
+        });
+});
 
 router.post('/', (req, res) => {
     const zooInfo = req.body;

@@ -8,6 +8,7 @@ const knexConfig = {
         filename: './data/lambda.sqlite3'
     }
 };
+
 const db = knex(knexConfig);
 
 router.get('/', (req, res) => {

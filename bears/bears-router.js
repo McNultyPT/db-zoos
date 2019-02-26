@@ -25,12 +25,10 @@ router.get("/:id", (req, res) => {
   db("bears")
     .where({ id: req.params.id })
     .then(bear => {
-      if (bear) {
-        res.status(200).json(bear);
+        if (bear.length > 0) {
+            res.status(200).json(bear);
       } else {
-        res
-          .status(404)
-          .json({ errorMessage: "A bear with that ID does not exist." });
+            res.status(404).json({ errorMessage: "A bear with that ID does not exist." });
       }
     })
     .catch(() => {
@@ -38,13 +36,30 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// router.get('/:id', (req, res) => {
+//     db('bears')
+//         .where({ id: req.params.id })
+//         .then(bear => {
+//             if (bear.id === req.params.id) {
+//                 db('bears')
+//                     .where({ id: req.params.id })
+//                     .then(bear => {
+//                         res.status(200).json(bear);
+//                     });
+//             } else {
+//                 res.status(404).json({ errorMessage: 'A bear with that ID does not exist.' });
+//             }
+//         })
+//         .catch(() => {
+//             res.status(500).json({ error: 'The bear could not be retrieved.' });
+//         });
+// });
+
 router.post("/", (req, res) => {
   const bearInfo = req.body;
 
   if (!bearInfo.name)
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide a name for the bear." });
+    return res.status(400).json({ errorMessage: "Please provide a name for the bear." });
 
   db("bears")
     .insert(req.body)
@@ -58,9 +73,7 @@ router.post("/", (req, res) => {
         });
     })
     .catch(() => {
-      res
-        .status(500)
-        .json({ error: "There was an error while saving the bear." });
+      res.status(500).json({ error: "There was an error while saving the bear." });
     });
 });
 
@@ -72,15 +85,11 @@ router.delete("/:id", (req, res) => {
       if (count > 0) {
         res.status(204).json({ message: "Bear has been deleted." });
       } else {
-        res
-          .status(404)
-          .json({ errorMessage: "A bear with that ID does not exist." });
+        res.status(404).json({ errorMessage: "A bear with that ID does not exist." });
       }
     })
     .catch(() => {
-      res
-        .status(500)
-        .json({ error: "There was an error while deleting the bear." });
+      res.status(500).json({ error: "There was an error while deleting the bear." });
     });
 });
 
@@ -88,9 +97,7 @@ router.put("/:id", (req, res) => {
   const bearInfo = req.body;
 
   if (!bearInfo.name)
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide a name to be updated." });
+    return res.status(400).json({ errorMessage: "Please provide a name to be updated." });
 
   db("bears")
     .where({ id: req.params.id })
@@ -103,15 +110,11 @@ router.put("/:id", (req, res) => {
             res.status(200).json(bear);
           });
       } else {
-        res
-          .status(404)
-          .json({ errorMessage: "A bear with that ID does not exist." });
+        res.status(404).json({ errorMessage: "A bear with that ID does not exist." });
       }
     })
     .catch(() => {
-      res
-        .status(500)
-        .json({ error: "There was an error while updating the bear." });
+      res.status(500).json({ error: "There was an error while updating the bear." });
     });
 });
 

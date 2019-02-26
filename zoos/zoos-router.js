@@ -25,7 +25,7 @@ router.get("/:id", (req, res) => {
   db("zoos")
     .where({ id: req.params.id })
     .then(zoo => {
-      if (zoo) {
+      if (zoo.length > 0) {
         res.status(200).json(zoo);
       } else {
         res

@@ -36,4 +36,26 @@ router.get('/:id', (req, res) => {
         }); 
 });
 
+router.post('/', (req, res) => {
+    const bearInfo = req.body;
+
+    if(!bearInfo.name)
+        return res.status(400).json({ errorMessage: 'Please provide a name for the bear.' });
+
+    db('bears')
+        .insert(req.body)
+        .then(ids => {
+            const [id] = ids;
+
+            db('bears')
+                .where({ id })
+                .then(bear => {
+                    res.status(201).json(bear);
+                });
+        })
+        .catch(() => {
+            res.status(500).json({ error: 'There was an error while saving the bear.' });
+        });
+});
+
 module.exports = router;
